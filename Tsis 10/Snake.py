@@ -4,7 +4,6 @@ import time
 import psycopg2
 from datetime import datetime
 
-# --- Настройки базы данных ---
 conn = psycopg2.connect(
     dbname="postgres",
     user="postgres",
@@ -14,7 +13,6 @@ conn = psycopg2.connect(
 )
 cur = conn.cursor()
 
-# --- Таблицы ---
 cur.execute("""
     CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
@@ -32,28 +30,28 @@ cur.execute("""
 """)
 conn.commit()
 
-# --- Получение или создание пользователя ---
+
 def get_or_create_user(username):
     cur.execute("SELECT id, level FROM users WHERE username = %s;", (username,))
     result = cur.fetchone()
     if result:
-        return result  # (id, level)
+        return result 
     else:
         cur.execute("INSERT INTO users (username) VALUES (%s) RETURNING id, level;", (username,))
         conn.commit()
         return cur.fetchone()
 
-# --- Сохранение результата ---
+
 def save_score(user_id, score):
     cur.execute("INSERT INTO user_scores (user_id, score) VALUES (%s, %s);", (user_id, score))
     conn.commit()
 
-# --- Запрос имени пользователя ---
+
 username = input("Введите имя пользователя: ")
 user_id, level = get_or_create_user(username)
 print(f"Добро пожаловать, {username}! Ваш текущий уровень: {level}")
 
-# --- Pygame setup ---
+
 pygame.init()
 WIDTH, HEIGHT = 400, 400
 CELL_SIZE = 20
@@ -65,7 +63,6 @@ RED = (255, 0, 0)
 BLUE = (0, 0, 255)
 font = pygame.font.Font(None, 30)
 
-# --- Игровые классы ---
 class Snake:
     def __init__(self):
         self.body = [(100, 100), (80, 100), (60, 100)]
@@ -121,7 +118,6 @@ class Food:
     def is_expired(self):
         return time.time() - self.spawn_time > 5
 
-# --- Игровой цикл ---
 snake = Snake()
 food = Food(snake.body)
 score = 0
@@ -146,7 +142,7 @@ while running:
             snake.direction = "LEFT"
         if keys[pygame.K_RIGHT] and snake.direction != "LEFT":
             snake.direction = "RIGHT"
-        if keys[pygame.K_p]:  # клавиша для паузы и сохранения
+        if keys[pygame.K_p]:  
             paused = True
             save_score(user_id, score)
             print(f"Игра приостановлена. Счёт {score} сохранён.")
@@ -173,7 +169,6 @@ while running:
         screen.blit(score_text, (10, 10))
         pygame.display.update()
 
-        # Уровень влияет на скорость
         clock.tick(7 + level * 2)
 
     else:
