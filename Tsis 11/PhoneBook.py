@@ -73,7 +73,7 @@ def query_data(filter_by=None, value=None):
 
 
 
-# Функция для удаления данных по имени или телефону
+# Функция для удаления данных по имени или телефону   ПЯТЫЙ КРИТЕРИЙ !!!!
 def delete_user(username=None, phone=None):
     if username:
         cur.execute("DELETE FROM PhoneBook WHERE username = %s;", (username,))
@@ -84,7 +84,7 @@ def delete_user(username=None, phone=None):
 
 
 
-# Функция для поиска записей по шаблону
+# Функция для поиска записей по шаблону    ПЕРВЫЙ КРИТЕРИЙ!!
 def query_by_pattern(pattern):
     cur.execute("SELECT * FROM PhoneBook WHERE username LIKE %s OR phone LIKE %s;", (f"%{pattern}%", f"%{pattern}%"))
     rows = cur.fetchall()
@@ -94,7 +94,7 @@ def query_by_pattern(pattern):
 
 
 
-# Функция для вставки нового или обновления пользователя
+# Функция для вставки нового или обновления пользователя    ВТОРОЙ КРИТЕРИЙ !!!!
 def insert_or_update_user(username, phone):
     cur.execute("SELECT * FROM PhoneBook WHERE username = %s;", (username,))
     if cur.fetchone():  # Если пользователь уже существует, обновляем номер телефона
@@ -106,11 +106,11 @@ def insert_or_update_user(username, phone):
 
 
 
-# Процедура для вставки нескольких пользователей с проверкой правильности телефона
+# вставкa нескольких пользователей с проверкой правильности телефона    ТРЕТИЙ КРИТЕРИЙ !!!!
 def insert_multiple_users(users):
     incorrect_data = []
     for username, phone in users:
-        if len(phone) != 15 or not phone.isdigit():  # Простая проверка корректности номера
+        if len(phone) != 15 or not phone.isdigit():  #проверка корректности номера
             incorrect_data.append((username, phone))
         else:
             cur.execute("INSERT INTO PhoneBook (username, phone) VALUES (%s, %s);", (username, phone))
@@ -124,7 +124,7 @@ def insert_multiple_users(users):
 
 
 
-# Функция для пагинации
+# Функция для пагинации   ЧЕТВЕРТЫЙ КРИТЕРИЙ !!!!
 def query_with_pagination(limit, offset):
     cur.execute("SELECT * FROM PhoneBook LIMIT %s OFFSET %s;", (limit, offset))
     rows = cur.fetchall()
@@ -138,7 +138,7 @@ def close():
 if __name__ == '__main__':
     create_table()
 
-    # Примеры вставки пользователей
+    # Примеры 
     insert_user("Alice", "123456789")
     insert_user("Bob", "987654321")
 
