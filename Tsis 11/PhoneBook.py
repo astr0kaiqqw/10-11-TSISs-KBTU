@@ -7,8 +7,6 @@ import csv
 
 
 # ПОДКЛЮЧЕНИЕ К БАЗЕ 
-
-
 conn = psycopg2.connect(
     dbname="postgres",
     user="postgres",
@@ -19,7 +17,6 @@ conn = psycopg2.connect(
 cur = conn.cursor()
 
   
-
 
 
 #СОЗДАЕМ ТАБЛИЦУ
@@ -36,16 +33,10 @@ def create_table():
 
 
 
-
-
-
-
 # Функция для добавления нового пользователя
 def insert_user(username, phone):
     cur.execute("INSERT INTO PhoneBook (username, phone) VALUES (%s, %s);", (username, phone))
     conn.commit()
-
-
 
 
 
@@ -67,7 +58,6 @@ def update_user(old_username=None, old_phone=None, new_username=None, new_phone=
 
 
 
-
 # Функция для запроса данных с фильтром
 def query_data(filter_by=None, value=None):
     if filter_by == 'username':
@@ -83,7 +73,6 @@ def query_data(filter_by=None, value=None):
 
 
 
-
 # Функция для удаления данных по имени или телефону
 def delete_user(username=None, phone=None):
     if username:
@@ -92,12 +81,18 @@ def delete_user(username=None, phone=None):
         cur.execute("DELETE FROM PhoneBook WHERE phone = %s;", (phone,))
     conn.commit()
 
+
+
+
 # Функция для поиска записей по шаблону
 def query_by_pattern(pattern):
     cur.execute("SELECT * FROM PhoneBook WHERE username LIKE %s OR phone LIKE %s;", (f"%{pattern}%", f"%{pattern}%"))
     rows = cur.fetchall()
     for row in rows:
         print(row)
+
+
+
 
 # Функция для вставки нового или обновления пользователя
 def insert_or_update_user(username, phone):
@@ -107,6 +102,9 @@ def insert_or_update_user(username, phone):
     else:
         cur.execute("INSERT INTO PhoneBook (username, phone) VALUES (%s, %s);", (username, phone))
     conn.commit()
+
+
+
 
 # Процедура для вставки нескольких пользователей с проверкой правильности телефона
 def insert_multiple_users(users):
@@ -122,6 +120,9 @@ def insert_multiple_users(users):
         for data in incorrect_data:
             print(data)
     return incorrect_data
+
+
+
 
 # Функция для пагинации
 def query_with_pagination(limit, offset):
