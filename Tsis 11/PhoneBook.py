@@ -1,6 +1,14 @@
 import psycopg2
 import csv
 
+
+
+
+
+
+# ПОДКЛЮЧЕНИЕ К БАЗЕ 
+
+
 conn = psycopg2.connect(
     dbname="postgres",
     user="postgres",
@@ -10,6 +18,11 @@ conn = psycopg2.connect(
 )
 cur = conn.cursor()
 
+  
+
+
+
+#СОЗДАЕМ ТАБЛИЦУ
 def create_table():
     cur.execute("""
         CREATE TABLE IF NOT EXISTS PhoneBook (
@@ -20,10 +33,22 @@ def create_table():
     """)
     conn.commit()
 
+
+
+
+
+
+
+
 # Функция для добавления нового пользователя
 def insert_user(username, phone):
     cur.execute("INSERT INTO PhoneBook (username, phone) VALUES (%s, %s);", (username, phone))
     conn.commit()
+
+
+
+
+
 
 # Функция для обновления телефона пользователя
 def update_user(old_username=None, old_phone=None, new_username=None, new_phone=None):
@@ -39,6 +64,10 @@ def update_user(old_username=None, old_phone=None, new_username=None, new_phone=
             cur.execute("UPDATE PhoneBook SET phone = %s WHERE phone = %s;", (new_phone, old_phone))
     conn.commit()
 
+
+
+
+
 # Функция для запроса данных с фильтром
 def query_data(filter_by=None, value=None):
     if filter_by == 'username':
@@ -50,6 +79,10 @@ def query_data(filter_by=None, value=None):
     rows = cur.fetchall()
     for row in rows:
         print(row)
+
+
+
+
 
 # Функция для удаления данных по имени или телефону
 def delete_user(username=None, phone=None):
