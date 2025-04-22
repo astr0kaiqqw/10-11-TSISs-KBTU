@@ -142,7 +142,6 @@ if __name__ == '__main__':
     insert_user("Alice", "123456789")
     insert_user("Bob", "987654321")
     insert_user("Ruslan", "87011014548")
-    insert_user("Maria", "vhfvbfhvbfhvb")
 
 
     # Обновление телефона пользователя
