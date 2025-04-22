@@ -141,6 +141,8 @@ if __name__ == '__main__':
     # Примеры 
     insert_user("Alice", "123456789")
     insert_user("Bob", "987654321")
+    insert_user("Ruslan", "87011014548")
+
 
     # Обновление телефона пользователя
     update_user(old_username="Alice", new_phone="111111111")
